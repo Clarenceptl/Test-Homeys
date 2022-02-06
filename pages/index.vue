@@ -36,14 +36,16 @@
       <div class="row mb-5">
         <div class="card shadow w-100 p-3">
           <h3 class="card-title mb-3">Nombre d'appels par jour</h3>
-          <bar-chart :data="barChartData"/>
+          <p v-if="!barChartData">En attente des données</p>
+          <bar-chart v-else :data="barChartData"/>
         </div>
 
       </div>
       <div class="row mb-5">
         <div class="card shadow w-100 p-3">
           <h3 class="card-title mb-3">Nombre d'appels en fonction des routes</h3>
-          <!-- <lines-chart :data="lineChartData"/> -->
+          <p v-if="!lineChartData">En attente des données</p>
+          <lines-chart v-else :data="lineChartData"/>
         </div>
 
       </div>
@@ -101,16 +103,6 @@ export default {
 
   },
   computed: {
-    lineChartData(){
-      let chart_data = [{datasets:[],labels:[]}];
-      if(this.api_data_filtered){
-        // this.api_data_filtered.map((item)=>{
-        //   chart_data.
-        // })
-      }else{
-        return null;
-      }
-    },
     barChartData(){
       if(this.api_data_filtered){
         let data_values = [];
@@ -124,14 +116,45 @@ export default {
             data_values.push(item.count);
           }
         }
-        // console.log(data_values)
         return [{label: label_values,data: data_values}]
       }
       return null
     },
+    lineChartData(){
+      let labels = [];
+      let datasets = [];
+
+      if(this.api_data_filtered){
+        for (let item of this.api_data_filtered) {
+          //create array of xAxis
+          if(labels.indexOf(item.date)=== -1 ){
+            labels.push(item.date);
+          }
+
+          // check if path already exist in the datasets
+          let check=false;
+          for (let datasets_index in datasets) {
+            if(item.path===datasets[datasets_index].label){
+              datasets[datasets_index].data.push(item.count);
+              check = true;
+            }
+          }
+
+          //if check, already push in the correct data of datasets, else create new data of datasets
+          if(check){
+            continue;
+          }else{
+            datasets.push({label: item.path,data: [item.count]});
+          }
+        }
+        return {labels,datasets}
+
+      }else{
+        return null;
+      }
+    },
     callNb(){
       let call_nb=0;
-      console.log(call_nb,'cc')
       if(this.api_data_filtered){
         this.api_data_filtered.map((item)=>{
           call_nb += item.count
@@ -145,7 +168,6 @@ export default {
   async created () {
     await this.getData();
     this.dataFilter()
-    // console.log(this.api_data_filtered,'create')
   }
 }
 </script>

@@ -51,13 +51,11 @@ export default {
             xAxes: [
               {
                 ticks: {
-                  beginAtZero: true,
-                  padding: 10
+
                 },
                 gridLines:{
                   display: false
                 },
-
               }
             ]
           }
@@ -85,11 +83,8 @@ export default {
       this.barChartData.data.labels = this.data[0].label
       this.barChartData.data.datasets[0].data = this.data[0].data
     }
-    console.log(this.barChartData)
-
     const ctx = document.getElementById('bar-chart');
     this.chart = new Chart(ctx, this.barChartData);
-
 
   }
 }
