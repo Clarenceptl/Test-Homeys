@@ -29,7 +29,7 @@
             <h4 class="card-title text-center mb-2">Total d'appels</h4>
             <p class="card-subtitle text-center">{{callNb}}</p>
             <h4 class="card-title text-center mt-4 mb-2">Période</h4>
-            <p class="card-subtitle text-center">{{form_value_begin}} / {{form_value_end}}</p>
+            <p class="card-subtitle text-center">{{form_value_begin}} - {{new Date(form_value_end).toISOString()}}</p>
           </div>
         </div>
       </div>
