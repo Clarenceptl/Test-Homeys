@@ -20,26 +20,44 @@ export default {
         type: "bar",
         data: {
           labels: [],
-          // labels: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
           datasets: [
             {
               data: [],
-              // data: [0, 0, 1, 2, 79, 82, 27, 14],
               backgroundColor: "#304282",
-              borderWidth: 0
             }
           ]
         },
         options: {
           responsive: true,
-          lineTension: 0,
+          legend: {
+            display: false
+          },
+          title: {
+            display: false
+          },
+
           scales: {
             yAxes: [
               {
                 ticks: {
                   beginAtZero: true,
-                  padding: 25
-                }
+                },
+                gridLines:{
+                  display: false
+                },
+
+              }
+            ],
+            xAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  padding: 10
+                },
+                gridLines:{
+                  display: false
+                },
+
               }
             ]
           }
@@ -67,6 +85,7 @@ export default {
       this.barChartData.data.labels = this.data[0].label
       this.barChartData.data.datasets[0].data = this.data[0].data
     }
+    console.log(this.barChartData)
 
     const ctx = document.getElementById('bar-chart');
     this.chart = new Chart(ctx, this.barChartData);

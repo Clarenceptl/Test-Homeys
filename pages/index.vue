@@ -33,7 +33,22 @@
           </div>
         </div>
       </div>
-      <BarChart :data="barChartData"/>
+      <div class="row mb-5">
+        <div class="card shadow w-100 p-3">
+          <h3 class="card-title mb-3">Nombre d'appels par jour</h3>
+          <bar-chart :data="barChartData"/>
+        </div>
+
+      </div>
+      <div class="row mb-5">
+        <div class="card shadow w-100 p-3">
+          <h3 class="card-title mb-3">Nombre d'appels en fonction des routes</h3>
+          <!-- <lines-chart :data="lineChartData"/> -->
+        </div>
+
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -41,9 +56,10 @@
 <script>
 import Header from '../components/Header.vue';
 import BarChart from '~/components/BarChart.vue';
+import LinesChart from '~/components/LinesChart.vue';
 
 export default {
-  components: { Header, BarChart },
+  components: { Header, BarChart, LinesChart },
   data  () {
     return {
       form_value_begin: "2021-12-01",
@@ -72,6 +88,7 @@ export default {
     dataFilter(){
       let start = new Date(this.form_value_begin);
       let end = new Date(this.form_value_end);
+
       if(this.api_data){
         this.api_data_filtered = this.api_data.filter(item => {
           let date = new Date(item.date);
@@ -84,30 +101,37 @@ export default {
 
   },
   computed: {
+    lineChartData(){
+      let chart_data = [{datasets:[],labels:[]}];
+      if(this.api_data_filtered){
+        // this.api_data_filtered.map((item)=>{
+        //   chart_data.
+        // })
+      }else{
+        return null;
+      }
+    },
     barChartData(){
       if(this.api_data_filtered){
-        let chart_data = [{label:[],data:[]}];
-        let filter_chart_arr = [];
-        let check_date_arr = [];
+        let data_values = [];
+        let label_values = [];
 
         for (let item of this.api_data_filtered) {
-          if(check_date_arr.indexOf(item.date)> -1 ){
-            filter_chart_arr[check_date_arr.indexOf(item.date)].count += item.count
+          if(label_values.indexOf(item.date)> -1 ){
+            data_values[label_values.indexOf(item.date)] += item.count
           }else{
-            check_date_arr.push(item.date);
-            filter_chart_arr.push(item)
+            label_values.push(item.date);
+            data_values.push(item.count);
           }
         }
-        for (let item of filter_chart_arr) {
-          chart_data[0].label.push(item.date);
-          chart_data[0].data.push(item.count);
-        }
-        return chart_data
+        // console.log(data_values)
+        return [{label: label_values,data: data_values}]
       }
       return null
     },
     callNb(){
       let call_nb=0;
+      console.log(call_nb,'cc')
       if(this.api_data_filtered){
         this.api_data_filtered.map((item)=>{
           call_nb += item.count

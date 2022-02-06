@@ -1,6 +1,6 @@
 <template>
-  <div class="row Header mb-5">
-    <div class="container-fluid">
+  <div class="container-fluid Header">
+    <div class="row mb-5">
       <img id="logo_homeys" class="img-fluid ml-4 p-3" src="~/assets/img/logoHomeys.svg" alt="Logo Homeys" >
     </div>
   </div>
